@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    image: golang
+    volumes:
+      - .:/workspace
+      - go-data:/go
+    working_dir: /workspace
+volumes:
+  go-data:
