@@ -3,9 +3,12 @@ version: "3.9"
 services:
   app:
     image: golang
+    command: go run main.go
+    ports:
+      - 8080:8080
     volumes:
-      - .:/workspace
+      - .:/go/src/app
       - go-data:/go
-    working_dir: /workspace
+    working_dir: /go/src/app
 volumes:
   go-data:
