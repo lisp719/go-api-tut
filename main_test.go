@@ -3,18 +3,30 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestPingRoute(t *testing.T) {
-	router := setupRouter()
+var _ = Describe("Ping", func() {
+	Describe("/ping", func() {
+		var (
+			response *httptest.ResponseRecorder
+		)
 
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/ping", nil)
-	router.ServeHTTP(w, req)
+		BeforeEach(func() {
+			router := setupRouter()
+			response = httptest.NewRecorder()
+			req, _ := http.NewRequest("GET", "/ping", nil)
+			router.ServeHTTP(response, req)
+		})
 
-	assert.Equal(t, 200, w.Code)
-	assert.Equal(t, "pong", w.Body.String())
-}
+		It("returns success response", func() {
+			Expect(response.Code).To((Equal(200)))
+		})
+
+		It("checks response body", func() {
+			Expect(response.Body.String()).To((Equal("pong")))
+		})
+	})
+})
