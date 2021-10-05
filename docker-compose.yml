@@ -4,8 +4,8 @@ services:
   app:
     image: golang
     volumes:
-      - .:/workspace
+      - .:/go/src/app
       - go-data:/go
-    working_dir: /workspace
+    working_dir: /go/src/app
 volumes:
   go-data:
