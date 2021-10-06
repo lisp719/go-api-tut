@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-api-tut/core"
 	"net/http"
 	"net/http/httptest"
 
@@ -15,7 +16,7 @@ var _ = Describe("Ping", func() {
 		)
 
 		BeforeEach(func() {
-			router := setupRouter()
+			router := core.SetupRouter()
 			response = httptest.NewRecorder()
 			req, _ := http.NewRequest("GET", "/ping", nil)
 			router.ServeHTTP(response, req)
@@ -26,7 +27,7 @@ var _ = Describe("Ping", func() {
 		})
 
 		It("checks response body", func() {
-			Expect(response.Body.String()).To((Equal("pong")))
+			Expect(response.Body.String()).To((Equal("{\"message\":\"pong\"}")))
 		})
 	})
 })
