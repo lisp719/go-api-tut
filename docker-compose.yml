@@ -4,11 +4,23 @@ services:
   app:
     image: golang
     command: go run main.go
+    depends_on:
+      - mysql
     ports:
       - 8080:8080
     volumes:
-      - .:/go/src/app
+      - .:/workspace
       - go-data:/go
-    working_dir: /go/src/app
+    working_dir: /workspace
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: go_api_tut
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
 volumes:
   go-data:
+  mysql-data:

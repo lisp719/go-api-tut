@@ -1,16 +1,12 @@
 package main
 
-import "github.com/gin-gonic/gin"
-
-func setupRouter() *gin.Engine {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
-	return r
-}
+import (
+	"go-api-tut/core"
+)
 
 func main() {
-	r := setupRouter()
+	core.SetupDb()
+
+	r := core.SetupRouter()
 	r.Run(":8080")
 }
