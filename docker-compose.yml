@@ -7,8 +7,8 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - .:/go/src/app
+      - .:/workspace
       - go-data:/go
-    working_dir: /go/src/app
+    working_dir: /workspace
 volumes:
   go-data:
