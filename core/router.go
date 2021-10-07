@@ -26,7 +26,12 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.POST("/users", func(c *gin.Context) {
-		user := User{Name: c.PostForm("name")}
+		user := User{}
+
+		err := c.BindJSON(&user)
+		if err != nil {
+			return
+		}
 		Db.Create(&user)
 
 		c.JSON(http.StatusCreated, user)
