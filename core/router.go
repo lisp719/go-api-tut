@@ -3,11 +3,14 @@ package core
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	r.Use(cors.Default())
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -23,7 +26,12 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.POST("/users", func(c *gin.Context) {
-		user := User{Name: c.PostForm("name")}
+		user := User{}
+
+		err := c.BindJSON(&user)
+		if err != nil {
+			return
+		}
 		Db.Create(&user)
 
 		c.JSON(http.StatusCreated, user)
