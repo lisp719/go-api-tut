@@ -4,6 +4,8 @@ services:
   app:
     image: golang
     command: go run main.go
+    environment:
+      GORM_DSN: root:@tcp(mysql:3306)/go_api_tut?charset=utf8&parseTime=True&loc=Local
     depends_on:
       - mysql
     ports:
