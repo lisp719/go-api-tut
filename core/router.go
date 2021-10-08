@@ -2,6 +2,7 @@ package core
 
 import (
 	"errors"
+	"go-api-tut/models"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -21,14 +22,14 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.GET("/users", func(c *gin.Context) {
-		users := []User{}
+		users := []models.User{}
 		Db.Find(&users)
 
 		c.JSON(http.StatusOK, users)
 	})
 
 	r.POST("/users", func(c *gin.Context) {
-		user := User{}
+		user := models.User{}
 
 		err := c.ShouldBindJSON(&user)
 		if err != nil {
@@ -42,7 +43,7 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.GET("/users/:id", func(c *gin.Context) {
-		user := User{}
+		user := models.User{}
 		result := Db.First(&user, c.Param("id"))
 
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -54,7 +55,7 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.PUT("/users/:id", func(c *gin.Context) {
-		user := User{}
+		user := models.User{}
 		result := Db.First(&user, c.Param("id"))
 
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -74,7 +75,7 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.DELETE("/users/:id", func(c *gin.Context) {
-		user := User{}
+		user := models.User{}
 		result := Db.First(&user, c.Param("id"))
 
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

@@ -1,16 +1,12 @@
 package core
 
 import (
+	"go-api-tut/models"
 	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
-
-type User struct {
-	gorm.Model
-	Name string `binding:"required"`
-}
 
 var Db *gorm.DB
 
@@ -22,5 +18,5 @@ func SetupDb() {
 		panic("failed to connect database")
 	}
 
-	Db.AutoMigrate(&User{})
+	Db.AutoMigrate(&models.User{})
 }
