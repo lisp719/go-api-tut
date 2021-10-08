@@ -1,10 +1,12 @@
 package core
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func SetupRouter() *gin.Engine {
@@ -28,10 +30,12 @@ func SetupRouter() *gin.Engine {
 	r.POST("/users", func(c *gin.Context) {
 		user := User{}
 
-		err := c.BindJSON(&user)
+		err := c.ShouldBindJSON(&user)
 		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
+
 		Db.Create(&user)
 
 		c.JSON(http.StatusCreated, user)
@@ -39,17 +43,28 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/users/:id", func(c *gin.Context) {
 		user := User{}
-		Db.First(&user, c.Param("id"))
+		result := Db.First(&user, c.Param("id"))
+
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, nil)
+			return
+		}
 
 		c.JSON(http.StatusOK, user)
 	})
 
 	r.PUT("/users/:id", func(c *gin.Context) {
 		user := User{}
-		Db.First(&user, c.Param("id"))
+		result := Db.First(&user, c.Param("id"))
 
-		err := c.BindJSON(&user)
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, nil)
+			return
+		}
+
+		err := c.ShouldBindJSON(&user)
 		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
@@ -59,7 +74,15 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.DELETE("/users/:id", func(c *gin.Context) {
-		Db.Delete(&User{}, c.Param("id"))
+		user := User{}
+		result := Db.First(&user, c.Param("id"))
+
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, nil)
+			return
+		}
+
+		Db.Delete(&user)
 
 		c.JSON(http.StatusNoContent, nil)
 	})

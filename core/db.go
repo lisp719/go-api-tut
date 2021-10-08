@@ -9,7 +9,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Name string
+	Name string `binding:"required"`
 }
 
 var Db *gorm.DB
