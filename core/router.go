@@ -30,10 +30,12 @@ func SetupRouter() *gin.Engine {
 	r.POST("/users", func(c *gin.Context) {
 		user := User{}
 
-		err := c.BindJSON(&user)
+		err := c.ShouldBindJSON(&user)
 		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
+
 		Db.Create(&user)
 
 		c.JSON(http.StatusCreated, user)
@@ -60,8 +62,9 @@ func SetupRouter() *gin.Engine {
 			return
 		}
 
-		err := c.BindJSON(&user)
+		err := c.ShouldBindJSON(&user)
 		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
