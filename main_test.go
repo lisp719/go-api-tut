@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-api-tut/core"
+	"go-api-tut/router"
 	"net/http"
 	"net/http/httptest"
 
@@ -16,7 +16,7 @@ var _ = Describe("Ping", func() {
 		)
 
 		BeforeEach(func() {
-			router := core.SetupRouter()
+			router := router.SetupRouter()
 			response = httptest.NewRecorder()
 			req, _ := http.NewRequest("GET", "/ping", nil)
 			router.ServeHTTP(response, req)
