@@ -2,11 +2,12 @@ package main
 
 import (
 	"go-api-tut/core"
+	"go-api-tut/router"
 )
 
 func main() {
 	core.SetupDb()
 
-	r := core.SetupRouter()
+	r := router.SetupRouter()
 	r.Run(":8080")
 }
