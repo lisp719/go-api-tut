@@ -17,20 +17,18 @@ import (
 var _ = Describe("Test/Requests/Users", func() {
 	BeforeEach(func() {
 		core.SetupDb()
+		core.Db = core.Db.Begin()
+	})
+
+	AfterEach(func() {
+		core.Db.Rollback()
 	})
 
 	Describe("GET /users", func() {
-		user := models.User{Name: "foo"}
-
-		BeforeEach(func() {
-			core.Db.Create(&user)
-		})
-
-		AfterEach(func() {
-			core.Db.Delete(&user)
-		})
-
 		It("returns ok response", func() {
+			user := models.User{Name: "foo"}
+			core.Db.Create(&user)
+
 			r := router.SetupRouter()
 
 			w := httptest.NewRecorder()
@@ -46,12 +44,6 @@ var _ = Describe("Test/Requests/Users", func() {
 	})
 
 	Describe("POST /users", func() {
-		AfterEach(func() {
-			var user models.User
-			core.Db.Last(&user)
-			core.Db.Delete(&user)
-		})
-
 		It("returns created response", func() {
 			r := router.SetupRouter()
 
@@ -84,17 +76,10 @@ var _ = Describe("Test/Requests/Users", func() {
 	})
 
 	Describe("GET /users/:id", func() {
-		user := models.User{Name: "foo"}
-
-		BeforeEach(func() {
-			core.Db.Create(&user)
-		})
-
-		AfterEach(func() {
-			core.Db.Delete(&user)
-		})
-
 		It("returns ok response", func() {
+			user := models.User{Name: "foo"}
+			core.Db.Create(&user)
+
 			r := router.SetupRouter()
 
 			w := httptest.NewRecorder()
@@ -109,17 +94,9 @@ var _ = Describe("Test/Requests/Users", func() {
 	})
 
 	Describe("PUT /users/:id", func() {
-		user := models.User{Name: "foo"}
-
-		BeforeEach(func() {
-			core.Db.Create(&user)
-		})
-
-		AfterEach(func() {
-			core.Db.Delete(&user)
-		})
-
 		It("returns ok response", func() {
+			user := models.User{Name: "foo"}
+			core.Db.Create(&user)
 			r := router.SetupRouter()
 
 			params, _ := json.Marshal(map[string]interface{}{"name": "updated"})
@@ -141,10 +118,6 @@ var _ = Describe("Test/Requests/Users", func() {
 
 		BeforeEach(func() {
 			core.Db.Create(&user)
-		})
-
-		AfterEach(func() {
-			core.Db.Delete(&user)
 		})
 
 		It("returns ok response", func() {
