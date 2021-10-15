@@ -9,6 +9,7 @@ import (
 	"go-api-tut/router"
 	"net/http"
 	"net/http/httptest"
+	"os"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -16,6 +17,7 @@ import (
 
 var _ = Describe("Test/Requests/Users", func() {
 	BeforeEach(func() {
+		os.Setenv("GORM_DSN", "root:@tcp(mysql:3306)/go_api_tut_test?charset=utf8&parseTime=True&loc=Local")
 		core.SetupDb()
 		core.Db = core.Db.Begin()
 	})
