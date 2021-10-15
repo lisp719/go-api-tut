@@ -27,21 +27,44 @@ var _ = Describe("Test/Requests/Users", func() {
 	})
 
 	Describe("GET /users", func() {
-		It("returns ok response", func() {
-			user := models.User{Name: "foo"}
-			core.Db.Create(&user)
+		Context("with query params", func() {
+			It("returns ok response", func() {
+				user := models.User{Name: "foo"}
+				another := models.User{Name: "bar"}
+				core.Db.Create(&user)
+				core.Db.Create(&another)
 
-			r := router.SetupRouter()
+				r := router.SetupRouter()
 
-			w := httptest.NewRecorder()
-			req, _ := http.NewRequest("GET", "/users", nil)
-			r.ServeHTTP(w, req)
+				w := httptest.NewRecorder()
+				req, _ := http.NewRequest("GET", "/users?q=fo", nil)
+				r.ServeHTTP(w, req)
 
-			users := []models.User{user}
-			expected, _ := json.Marshal(users)
+				users := []models.User{user}
+				expected, _ := json.Marshal(users)
 
-			Expect(w.Code).To(Equal(http.StatusOK))
-			Expect(w.Body).To(MatchJSON(expected))
+				Expect(w.Code).To(Equal(http.StatusOK))
+				Expect(w.Body).To(MatchJSON(expected))
+			})
+		})
+
+		Context("without query params", func() {
+			It("returns ok response", func() {
+				user := models.User{Name: "foo"}
+				core.Db.Create(&user)
+
+				r := router.SetupRouter()
+
+				w := httptest.NewRecorder()
+				req, _ := http.NewRequest("GET", "/users", nil)
+				r.ServeHTTP(w, req)
+
+				users := []models.User{user}
+				expected, _ := json.Marshal(users)
+
+				Expect(w.Code).To(Equal(http.StatusOK))
+				Expect(w.Body).To(MatchJSON(expected))
+			})
 		})
 	})
 
