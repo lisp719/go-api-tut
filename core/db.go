@@ -1,7 +1,6 @@
 package core
 
 import (
-	"go-api-tut/models"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -17,6 +16,4 @@ func SetupDb() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-
-	Db.AutoMigrate(&models.User{})
 }
