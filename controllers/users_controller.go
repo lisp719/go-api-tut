@@ -5,6 +5,7 @@ import (
 	"go-api-tut/core"
 	"go-api-tut/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,12 +14,18 @@ import (
 func GetUsers(c *gin.Context) {
 	users := []models.User{}
 
-	if q := c.Query("q"); q == "" {
-		core.Db.Find(&users)
-	} else {
-		core.Db.Where("name LIKE ?", "%"+q+"%").Find(&users)
+	conn := core.Db
+
+	if q := c.Query("q"); q != "" {
+		conn = core.Db.Where("name LIKE ?", "%"+q+"%")
 	}
 
+	page, _ := strconv.Atoi(c.Query("page"))
+	if page == 0 {
+		page = 1
+	}
+
+	conn.Offset((page - 1) * 10).Limit(10).Find(&users)
 	c.JSON(http.StatusOK, users)
 }
 
