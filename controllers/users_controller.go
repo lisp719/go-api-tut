@@ -12,7 +12,12 @@ import (
 
 func GetUsers(c *gin.Context) {
 	users := []models.User{}
-	core.Db.Find(&users)
+
+	if q := c.Query("q"); q == "" {
+		core.Db.Find(&users)
+	} else {
+		core.Db.Where("name LIKE ?", "%"+q+"%").Find(&users)
+	}
 
 	c.JSON(http.StatusOK, users)
 }
