@@ -29,6 +29,10 @@ var _ = Describe("Test/Requests/Users", func() {
 	Describe("GET /users", func() {
 		Context("with query params", func() {
 			It("returns ok response", func() {
+				for i := 0; i < 10; i++ {
+					user := models.User{Name: "foo"}
+					core.Db.Create(&user)
+				}
 				user := models.User{Name: "foo"}
 				another := models.User{Name: "bar"}
 				core.Db.Create(&user)
@@ -37,7 +41,7 @@ var _ = Describe("Test/Requests/Users", func() {
 				r := router.SetupRouter()
 
 				w := httptest.NewRecorder()
-				req, _ := http.NewRequest("GET", "/users?q=fo", nil)
+				req, _ := http.NewRequest("GET", "/users?q=fo&page=2", nil)
 				r.ServeHTTP(w, req)
 
 				users := []models.User{user}
