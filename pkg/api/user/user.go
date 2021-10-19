@@ -2,8 +2,8 @@ package user
 
 import (
 	"errors"
-	"go-api-tut/core"
-	"go-api-tut/model"
+	"go-api-tut/pkg/core"
+	"go-api-tut/pkg/model"
 	"net/http"
 	"strconv"
 

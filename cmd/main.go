@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-api-tut/core"
-	"go-api-tut/router"
+	"go-api-tut/pkg/core"
+	"go-api-tut/pkg/router"
 )
 
 func main() {
