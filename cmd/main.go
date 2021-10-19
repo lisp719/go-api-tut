@@ -9,5 +9,8 @@ func main() {
 	core.SetupDb()
 
 	r := router.SetupRouter()
-	r.Run()
+
+	if err := r.Run(); err != nil {
+		panic("failed to start server")
+	}
 }
