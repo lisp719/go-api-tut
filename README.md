@@ -17,3 +17,10 @@ docker-compose run app sql-migrate up -env test
 docker-compose run go install github.com/onsi/ginkgo/ginkgo@latest
 docker-compose run ginkgo -r
 ```
+
+# lint
+
+```
+docker-compose run app bash -c 'curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.42.1'
+docker-compose run app golangci-lint run
+```
