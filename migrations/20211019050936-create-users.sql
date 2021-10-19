@@ -1,3 +1,4 @@
+-- +migrate Up
 CREATE TABLE IF NOT EXISTS users(
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
@@ -7,3 +8,6 @@ CREATE TABLE IF NOT EXISTS users(
   PRIMARY KEY (`id`),
   KEY `idx_users_deleted_at` (`deleted_at`)
 );
+
+-- +migrate Down
+DROP TABLE IF EXISTS users;
