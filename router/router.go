@@ -1,7 +1,7 @@
 package router
 
 import (
-	"go-api-tut/controllers"
+	"go-api-tut/api/user"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,11 +12,11 @@ func SetupRouter() *gin.Engine {
 
 	r.Use(cors.Default())
 
-	r.GET("/users", controllers.GetUsers)
-	r.POST("/users", controllers.CreateUser)
-	r.GET("/users/:id", controllers.GetUser)
-	r.PUT("/users/:id", controllers.UpdateUser)
-	r.DELETE("/users/:id", controllers.DeleteUser)
+	r.GET("/users", user.GetUsers)
+	r.POST("/users", user.CreateUser)
+	r.GET("/users/:id", user.GetUser)
+	r.PUT("/users/:id", user.UpdateUser)
+	r.DELETE("/users/:id", user.DeleteUser)
 
 	return r
 }
