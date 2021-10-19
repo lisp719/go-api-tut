@@ -9,6 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_DATABASE: go_api_tut_test
     steps:
       - uses: actions/checkout@v2
 
@@ -17,8 +23,13 @@ jobs:
         with:
           go-version: 1.17
 
-      - name: Build
-        run: go build -v ./...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+
+      - name: migrate
+        run: |
+          go install github.com/rubenv/sql-migrate/sql-migrate@latest
+          sql-migrate up -env test
 
       - name: Test
         run: go test -v ./...
