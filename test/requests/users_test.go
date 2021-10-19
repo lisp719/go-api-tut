@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-api-tut/core"
-	"go-api-tut/models"
+	"go-api-tut/model"
 	"go-api-tut/router"
 	"net/http"
 	"net/http/httptest"
@@ -30,11 +30,11 @@ var _ = Describe("Test/Requests/Users", func() {
 		Context("with query params", func() {
 			It("returns ok response", func() {
 				for i := 0; i < 10; i++ {
-					user := models.User{Name: "foo"}
+					user := model.User{Name: "foo"}
 					core.Db.Create(&user)
 				}
-				user := models.User{Name: "foo"}
-				another := models.User{Name: "bar"}
+				user := model.User{Name: "foo"}
+				another := model.User{Name: "bar"}
 				core.Db.Create(&user)
 				core.Db.Create(&another)
 
@@ -44,7 +44,7 @@ var _ = Describe("Test/Requests/Users", func() {
 				req, _ := http.NewRequest("GET", "/users?q=fo&page=2", nil)
 				r.ServeHTTP(w, req)
 
-				users := []models.User{user}
+				users := []model.User{user}
 				expected, _ := json.Marshal(users)
 
 				Expect(w.Code).To(Equal(http.StatusOK))
@@ -54,7 +54,7 @@ var _ = Describe("Test/Requests/Users", func() {
 
 		Context("without query params", func() {
 			It("returns ok response", func() {
-				user := models.User{Name: "foo"}
+				user := model.User{Name: "foo"}
 				core.Db.Create(&user)
 
 				r := router.SetupRouter()
@@ -63,7 +63,7 @@ var _ = Describe("Test/Requests/Users", func() {
 				req, _ := http.NewRequest("GET", "/users", nil)
 				r.ServeHTTP(w, req)
 
-				users := []models.User{user}
+				users := []model.User{user}
 				expected, _ := json.Marshal(users)
 
 				Expect(w.Code).To(Equal(http.StatusOK))
@@ -81,7 +81,7 @@ var _ = Describe("Test/Requests/Users", func() {
 			req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(params))
 			r.ServeHTTP(w, req)
 
-			var user models.User
+			var user model.User
 			core.Db.Last(&user)
 			expected, _ := json.Marshal(user)
 
@@ -97,7 +97,7 @@ var _ = Describe("Test/Requests/Users", func() {
 			req, _ := http.NewRequest("POST", "/users", bytes.NewBuffer(params))
 			r.ServeHTTP(w, req)
 
-			var users []models.User
+			var users []model.User
 			result := core.Db.Find(&users)
 
 			Expect(result.RowsAffected).To(Equal(int64(1)))
@@ -106,7 +106,7 @@ var _ = Describe("Test/Requests/Users", func() {
 
 	Describe("GET /users/:id", func() {
 		It("returns ok response", func() {
-			user := models.User{Name: "foo"}
+			user := model.User{Name: "foo"}
 			core.Db.Create(&user)
 
 			r := router.SetupRouter()
@@ -124,7 +124,7 @@ var _ = Describe("Test/Requests/Users", func() {
 
 	Describe("PUT /users/:id", func() {
 		It("returns ok response", func() {
-			user := models.User{Name: "foo"}
+			user := model.User{Name: "foo"}
 			core.Db.Create(&user)
 			r := router.SetupRouter()
 
@@ -133,7 +133,7 @@ var _ = Describe("Test/Requests/Users", func() {
 			req, _ := http.NewRequest("PUT", fmt.Sprintf("/users/%d", user.ID), bytes.NewBuffer(params))
 			r.ServeHTTP(w, req)
 
-			var reload models.User
+			var reload model.User
 			core.Db.Find(&reload, user.ID)
 			expected, _ := json.Marshal(reload)
 
@@ -143,7 +143,7 @@ var _ = Describe("Test/Requests/Users", func() {
 	})
 
 	Describe("DELETE /users/:id", func() {
-		user := models.User{Name: "foo"}
+		user := model.User{Name: "foo"}
 
 		BeforeEach(func() {
 			core.Db.Create(&user)
@@ -167,7 +167,7 @@ var _ = Describe("Test/Requests/Users", func() {
 			req, _ := http.NewRequest("DELETE", fmt.Sprintf("/users/%d", user.ID), nil)
 			r.ServeHTTP(w, req)
 
-			var users []models.User
+			var users []model.User
 			result := core.Db.Find(&users)
 			Expect(result.RowsAffected).To(Equal(int64(0)))
 		})
