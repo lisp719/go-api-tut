@@ -1,4 +1,4 @@
-package requests_test
+package user_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestRequests(t *testing.T) {
+func TestUser(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Requests Suite")
+	RunSpecs(t, "User Suite")
 }

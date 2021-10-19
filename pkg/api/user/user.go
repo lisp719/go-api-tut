@@ -1,9 +1,9 @@
-package controllers
+package user
 
 import (
 	"errors"
-	"go-api-tut/core"
-	"go-api-tut/models"
+	"go-api-tut/pkg/core"
+	"go-api-tut/pkg/model"
 	"net/http"
 	"strconv"
 
@@ -12,7 +12,7 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	users := []models.User{}
+	users := []model.User{}
 
 	conn := core.Db
 
@@ -30,7 +30,7 @@ func GetUsers(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
-	user := models.User{}
+	user := model.User{}
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
@@ -44,7 +44,7 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	user := models.User{}
+	user := model.User{}
 	result := core.Db.First(&user, c.Param("id"))
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -56,7 +56,7 @@ func GetUser(c *gin.Context) {
 }
 
 func UpdateUser(c *gin.Context) {
-	user := models.User{}
+	user := model.User{}
 	result := core.Db.First(&user, c.Param("id"))
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -76,7 +76,7 @@ func UpdateUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	user := models.User{}
+	user := model.User{}
 	result := core.Db.First(&user, c.Param("id"))
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
