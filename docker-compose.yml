@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    image: golang
+    build: .
     command: air
     environment:
       GORM_DSN: root:@tcp(mysql:3306)/go_api_tut_development?charset=utf8&parseTime=True&loc=Local
@@ -10,6 +10,13 @@ services:
       - mysql
     ports:
       - 8080:8080
+    volumes:
+      - .:/workspace
+      - go-data:/go
+    working_dir: /workspace
+  grpc:
+    build: .
+    command: go run pkg/grpc/server/main.go
     volumes:
       - .:/workspace
       - go-data:/go
