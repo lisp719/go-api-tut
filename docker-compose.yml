@@ -14,6 +14,13 @@ services:
       - .:/workspace
       - go-data:/go
     working_dir: /workspace
+  grpc:
+    build: .
+    command: go run pkg/grpc/server/main.go
+    volumes:
+      - .:/workspace
+      - go-data:/go
+    working_dir: /workspace
   mysql:
     image: mysql
     environment:

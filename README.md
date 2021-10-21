@@ -6,6 +6,19 @@ docker-compose run app sql-migrate up
 docker-compose up
 ```
 
+# grpc
+
+```
+docker-compose up -d grpc
+docker-compose run app go run pkg/grpc/client/main.go
+```
+
+# regenerate grpc code
+
+```
+docker-compose run app protoc --go_out . --go-grpc_out . pkg/grpc/proto/hello.proto
+```
+
 # test
 
 ```
