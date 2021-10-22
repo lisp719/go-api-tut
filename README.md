@@ -10,7 +10,7 @@ docker-compose up
 # regenerate grpc code
 
 ```
-docker-compose run app protoc --go_out . --go-grpc_out . pkg/grpc/proto/hello.proto
+docker-compose run app protoc --go_out . --go-grpc_out . pkg/proto/hello.proto
 ```
 
 # test

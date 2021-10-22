@@ -12,6 +12,8 @@ func SetupRouter() *gin.Engine {
 
 	r.Use(cors.Default())
 
+	r.GET("/grpc/hello", user.Hello)
+
 	r.GET("/users", user.GetUsers)
 	r.POST("/users", user.CreateUser)
 	r.GET("/users/:id", user.GetUser)
