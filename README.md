@@ -11,6 +11,7 @@ docker-compose up
 
 ```
 docker-compose run app protoc --go_out . --go-grpc_out . pkg/proto/hello.proto
+docker-compose run grpc npm run build
 ```
 
 # test

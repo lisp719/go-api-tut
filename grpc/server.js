@@ -1,26 +1,18 @@
 const grpc = require("@grpc/grpc-js");
-const protoLoader = require("@grpc/proto-loader");
 
-const PROTO_PATH = __dirname + "/hello.proto";
-
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true,
-});
-
-const hello_proto = grpc.loadPackageDefinition(packageDefinition).hello;
+const messages = require("./hello_pb");
+const services = require("./hello_grpc_pb");
 
 function sayHello(call, callback) {
-  callback(null, { message: "Hello " + call.request.name });
+  const reply = new messages.HelloReply();
+  reply.setMessage("Hello " + call.request.getName());
+  callback(null, reply);
 }
 
 function main() {
   const server = new grpc.Server();
 
-  server.addService(hello_proto.Greeter.service, { sayHello: sayHello });
+  server.addService(services.GreeterService, { sayHello: sayHello });
 
   server.bindAsync(
     "0.0.0.0:50051",

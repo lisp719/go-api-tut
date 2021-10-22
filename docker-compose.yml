@@ -16,8 +16,8 @@ services:
       - go-data:/go
     working_dir: /workspace
   grpc:
-    image: node:lts-alpine
-    command: node server.js
+    image: node:lts
+    command: npm start
     volumes:
       - ./grpc:/workspace
     working_dir: /workspace
