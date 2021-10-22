@@ -3,14 +3,8 @@
 ```
 docker-compose build
 docker-compose run app sql-migrate up
+docker-compose run grpc npm i
 docker-compose up
-```
-
-# grpc
-
-```
-docker-compose up -d grpc
-docker-compose run app go run pkg/grpc/client/main.go
 ```
 
 # regenerate grpc code

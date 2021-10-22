@@ -7,6 +7,7 @@ services:
     environment:
       GORM_DSN: root:@tcp(mysql:3306)/go_api_tut_development?charset=utf8&parseTime=True&loc=Local
     depends_on:
+      - grpc
       - mysql
     ports:
       - 8080:8080
@@ -15,11 +16,10 @@ services:
       - go-data:/go
     working_dir: /workspace
   grpc:
-    build: .
-    command: go run pkg/grpc/server/main.go
+    image: node:lts-alpine
+    command: node server.js
     volumes:
-      - .:/workspace
-      - go-data:/go
+      - ./grpc:/workspace
     working_dir: /workspace
   mysql:
     image: mysql
